@@ -8,22 +8,29 @@ public class TileBase : MonoBehaviour
 
     [SerializeField] private GameObject tileBorder;
 
+    private Vector2Int tilePosition;
+
     private string tileType;
 
     #endregion
 
     #region Other Methods
 
+    public void SetTilePosition(Vector2Int tilePosition)
+    {
+        this.tilePosition = tilePosition;
+    }
+
     public void OnTileClicked()
     {
-        Debug.Log(gameObject.transform.name + " clicked");
+        Debug.Log(tilePosition + ". tile clicked");
         ShowTileBorder();
     }
 
 
     public void OnTileHeld()
     {
-        Debug.Log(gameObject.transform.name + " holded");
+        Debug.Log(tilePosition + ". tile holded");
     }
 
     private void ShowTileBorder()

@@ -38,6 +38,7 @@ public class GridManager : MonoBehaviour
                 TileBase newTile = Instantiate(tilePrefab);
 
                 tiles[x, y] = newTile;
+                newTile.SetTilePosition(new Vector2Int(x, y));
 
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
             }
