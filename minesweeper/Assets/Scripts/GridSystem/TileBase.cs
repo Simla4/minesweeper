@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TileBase : MonoBehaviour
+public class TileBase : MonoBehaviour, IPointerClickHandler
 {
     #region Variables
 
@@ -21,6 +20,11 @@ public class TileBase : MonoBehaviour
         this.tilePosition = tilePosition;
     }
 
+    public Vector2Int GetTilePosition()
+    {
+        return tilePosition;
+    }
+
     public void OnTileClicked()
     {
         Debug.Log(tilePosition + ". tile clicked");
@@ -36,6 +40,11 @@ public class TileBase : MonoBehaviour
     private void ShowTileBorder()
     {
         tileBorder.SetActive(true);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("Simla");
     }
 
     #endregion
