@@ -1,6 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
@@ -8,10 +10,24 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private int gridWidth = 9;
     [SerializeField] private int gridHeight = 9;
-    [SerializeField] private int bombCount;
-    [SerializeField] TileBase tilePrefab;
-
+    [SerializeField] private int mineCount = 10;
+    [SerializeField] private TileBase tilePrefab;
+    
+    public TileBase selectedTile;
+    public List<Vector2Int> mineRestrictedTiles;
     private TileBase[,] tiles;
+
+    private List<Vector2Int> directions = new List<Vector2Int>
+    {
+        new Vector2Int(0, 1),
+        new Vector2Int(0, -1),
+        new Vector2Int(1, 0),
+        new Vector2Int(-1, 0),
+        new Vector2Int(1, -1),
+        new Vector2Int(1, 1),
+        new Vector2Int(-1, 1),
+        new Vector2Int(-1, -1)
+    };
 
     #endregion
 
@@ -45,6 +61,40 @@ public class GridManager : MonoBehaviour
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
             }
         }
+    }
+
+    private void GenerateMines()
+    {
+        int i = 0;
+        while (i < mineCount)
+        {
+            int xPosition = Random.Range(0, gridWidth);
+            int yPosition = Random.Range(0, gridHeight);
+            if (tiles[xPosition, yPosition].Type == TileBase.TileType.Empty &&
+                !mineRestrictedTiles.Contains(new Vector2Int(xPosition, yPosition)))
+            {
+                tiles[xPosition, yPosition].Type = TileBase.TileType.Mine;
+                i++;
+                Debug.Log("X: " + xPosition + " Y: " + yPosition + "position include mine.");
+            }
+        }
+    }
+
+    [Button]
+    private void CheckMineRestrictedTiles()
+    {
+        for (int i = 0; i < directions.Count; i++)
+        {
+            Vector2Int selectedTilePosition = selectedTile.GetTilePosition();
+            Vector2Int targetTilePosition = selectedTilePosition + directions[i];
+
+            if (tiles[targetTilePosition.x, targetTilePosition.y] != null)
+            {
+                mineRestrictedTiles.Add(targetTilePosition);
+            }
+        }
+        
+        GenerateMines();
     }
 
     #endregion
