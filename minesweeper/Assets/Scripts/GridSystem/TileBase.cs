@@ -14,6 +14,7 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     
     public bool Opened { get => opened; set => opened = value; }
     public bool Flagged { get => flagged;  set => flagged = value; }
+    public TileType Type { get => type; set => type = value; }
 
     #endregion
 
@@ -56,7 +57,7 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
 
     #endregion
 
-    enum  TileType
+    public enum  TileType
     {
         Empty,
         Mine,

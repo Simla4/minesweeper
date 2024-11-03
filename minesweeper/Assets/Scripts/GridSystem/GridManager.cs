@@ -40,6 +40,7 @@ public class GridManager : MonoBehaviour
 
                 tiles[x, y] = newTile;
                 newTile.SetTilePosition(new Vector2Int(x, y), this);
+                newTile.Type = TileBase.TileType.Empty;
 
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
             }
