@@ -8,18 +8,25 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject tileBorder;
 
     private Vector2Int tilePosition;
-
-    private string tileType;
+    private TileType type;
+    private bool flagged = false;
+    private bool opened = false;
+    
+    public bool Opened { get => opened; set => opened = value; }
+    public bool Flagged { get => flagged;  set => flagged = value; }
 
     #endregion
 
     #region Other Methods
 
-    public void SetTilePosition(Vector2Int tilePosition)
+    public void SetTilePosition(Vector2Int tilePosition, GridManager caller)
     {
-        this.tilePosition = tilePosition;
+        if (caller != null)
+        {
+            this.tilePosition = tilePosition;
+        }
     }
-
+    
     public Vector2Int GetTilePosition()
     {
         return tilePosition;
@@ -44,8 +51,15 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Simla");
+        OnTileClicked();
     }
 
     #endregion
+
+    enum  TileType
+    {
+        Empty,
+        Mine,
+        Numbers
+    }
 }
