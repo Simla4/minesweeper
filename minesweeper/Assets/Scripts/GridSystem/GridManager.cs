@@ -62,24 +62,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
-    private void GenerateMines()
-    {
-        int i = 0;
-        while (i < mineCount)
-        {
-            int xPosition = Random.Range(0, gridWidth);
-            int yPosition = Random.Range(0, gridHeight);
-            if (tiles[xPosition, yPosition].Type == TileBase.TileType.Empty &&
-                !mineRestrictedTiles.Contains(new Vector2Int(xPosition, yPosition)))
-            {
-                tiles[xPosition, yPosition].Type = TileBase.TileType.Mine;
-                i++;
-                Debug.Log("X: " + xPosition + " Y: " + yPosition + "position include mine.");
-            }
-        }
-    }
-
+    
     [Button]
     private void CheckMineRestrictedTiles()
     {
@@ -95,6 +78,49 @@ public class GridManager : MonoBehaviour
         }
         
         GenerateMines();
+    }
+
+    private void GenerateMines()
+    {
+        int i = 0;
+        while (i < mineCount)
+        {
+            int xPosition = Random.Range(0, gridWidth);
+            int yPosition = Random.Range(0, gridHeight);
+            if (tiles[xPosition, yPosition].Type == TileBase.TileType.Empty &&
+                !mineRestrictedTiles.Contains(new Vector2Int(xPosition, yPosition)))
+            {
+                tiles[xPosition, yPosition].Type = TileBase.TileType.Mine;
+                i++;
+                Debug.Log("X: " + xPosition + " Y: " + yPosition + " position include mine.");
+            }
+        }
+        
+        GenerateNumbers();
+    }
+
+    private void GenerateNumbers()
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                CheckAllDirections(new Vector2Int(x, y));
+                tiles[x, y].Type = TileBase.TileType.Number;
+            }
+        }
+    }
+
+    private int CheckAllDirections(Vector2Int position)
+    {
+        int mineCount = 0;
+        
+        for (int i = 0; i < directions.Count; i++)
+        {
+            Vector2Int targetTilePosition = position + directions[i];
+            mineCount++;
+        }
+        return mineCount;
     }
 
     #endregion

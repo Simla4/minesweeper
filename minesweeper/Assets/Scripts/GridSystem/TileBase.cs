@@ -1,3 +1,4 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,8 +6,9 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
 {
     #region Variables
 
-    [SerializeField] private GameObject tileBorder;
-
+    [SerializeField] private Image tileImg;
+    
+    private Sprite valueSprite;
     private Vector2Int tilePosition;
     private TileType type;
     private bool flagged = false;
@@ -27,6 +29,14 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
             this.tilePosition = tilePosition;
         }
     }
+
+    public void SetTileSprite(string id, GridManager caller)
+    {
+        if (caller != null)
+        {
+            
+        }
+    }
     
     public Vector2Int GetTilePosition()
     {
@@ -36,7 +46,7 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     public void OnTileClicked()
     {
         Debug.Log(tilePosition + ". tile clicked");
-        ShowTileBorder();
+        ExplodeTile();
     }
 
 
@@ -45,9 +55,9 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
         Debug.Log(tilePosition + ". tile holded");
     }
 
-    private void ShowTileBorder()
+    private void ExplodeTile()
     {
-        tileBorder.SetActive(true);
+        
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -61,6 +71,6 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     {
         Empty,
         Mine,
-        Numbers
+        Number
     }
 }
