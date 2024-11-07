@@ -247,7 +247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55de66f6eecfb45928c1cc311938a94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileBorder: {fileID: 3939220920309038753}
+  tileImg: {fileID: 7701752075895147680}
+  tileData: {fileID: 11400000, guid: bbbb6147b7876493581e90ecfa716a96, type: 2}
 --- !u!61 &7866925183641082113
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,14 +1,14 @@
 using System;
-using System.Linq;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
 
 public class TileBase : MonoBehaviour, IPointerClickHandler
 {
     #region Variables
 
-    [SerializeField] private Image tileImg;
+    [SerializeField] private SpriteRenderer tileImg;
     [SerializeField] private TileData tileData;
     
     private Sprite defaultSprite;
@@ -53,7 +53,10 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
 
     private void ExplodeTile()
     {
-        
+        if (openedSprite != null)
+        {
+            tileImg.sprite = openedSprite;
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -65,9 +68,12 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     {
         if (caller != null)
         {
-            var tileTypeSrites = tileData.tileTypeSprites;
-            var sprite = tileTypeSrites.FirstOrDefault(x => x.Value == tileType).Key;
-            openedSprite = sprite;
+            var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
+            
+            if (tileSpriteDictionary.TryGetValue(tileType, out Sprite sprite))
+            {
+                openedSprite = sprite;
+            }
         }
     }
 

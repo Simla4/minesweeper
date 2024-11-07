@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     public List<Vector2Int> mineRestrictedTiles;
     private TileBase[,] tiles;
 
+    private List<Vector2Int> minePositions;
     private List<Vector2Int> directions = new List<Vector2Int>
     {
         new Vector2Int(0, 1),
@@ -98,6 +99,8 @@ public class GridManager : MonoBehaviour
                 !mineRestrictedTiles.Contains(new Vector2Int(xPosition, yPosition)))
             {
                 tiles[xPosition, yPosition].Type = TileBase.TileType.Mine;
+//                minePositions.Add(new Vector2Int(xPosition, yPosition));
+                tiles[xPosition, yPosition].SetTileType("Mine", this);
                 i++;
                 Debug.Log("X: " + xPosition + " Y: " + yPosition + " position include mine.");
             }
