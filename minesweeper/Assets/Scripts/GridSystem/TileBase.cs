@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,8 +9,10 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     #region Variables
 
     [SerializeField] private Image tileImg;
+    [SerializeField] private TileData tileData;
     
-    private Sprite valueSprite;
+    private Sprite defaultSprite;
+    private Sprite openedSprite;
     private Vector2Int tilePosition;
     private TileType type;
     private bool flagged = false;
@@ -27,14 +31,6 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
         if (caller != null)
         {
             this.tilePosition = tilePosition;
-        }
-    }
-
-    public void SetTileSprite(string id, GridManager caller)
-    {
-        if (caller != null)
-        {
-            
         }
     }
     
@@ -63,6 +59,16 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         OnTileClicked();
+    }
+
+    public void SetTileType(String tileType, GridManager caller)
+    {
+        if (caller != null)
+        {
+            var tileTypeSrites = tileData.tileTypeSprites;
+            var sprite = tileTypeSrites.FirstOrDefault(x => x.Value == tileType).Key;
+            openedSprite = sprite;
+        }
     }
 
     #endregion
