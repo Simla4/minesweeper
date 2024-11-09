@@ -15,7 +15,25 @@ MonoBehaviour:
   tileSprites:
   - tileType: Mine
     sprite: {fileID: 21300000, guid: ea6919c3d4f514730bff0c02a4741a1b, type: 3}
-  - tileType: 0
-    sprite: {fileID: 0}
+  - tileType: Empty
+    sprite: {fileID: 21300000, guid: 310fc7a43275440ddbd6c8b95defea07, type: 3}
   - tileType: 1
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: debe176f29982488c8576081a6e3101f, type: 3}
+  - tileType: 2
+    sprite: {fileID: 21300000, guid: c9b967b96a803412eafcc6029a8edbce, type: 3}
+  - tileType: 3
+    sprite: {fileID: 21300000, guid: 52645a18e7f334b97a092b4537e692c5, type: 3}
+  - tileType: 4
+    sprite: {fileID: 21300000, guid: ed2535548e112470cbe1a87e741d0f3f, type: 3}
+  - tileType: 5
+    sprite: {fileID: 21300000, guid: 26abb16fd08a24d71bfee7eed657f3a9, type: 3}
+  - tileType: 6
+    sprite: {fileID: 21300000, guid: b02daa8e92b8f465e9b90b53aa94582e, type: 3}
+  - tileType: 7
+    sprite: {fileID: 21300000, guid: 2518aae37689146bc9e593c1cd8dbadb, type: 3}
+  - tileType: 8
+    sprite: {fileID: 21300000, guid: 22798822a00a24610a63b29610eb40e1, type: 3}
+  - tileType: Flag
+    sprite: {fileID: 21300000, guid: 03c75f266a0704f9b84e7547fac062e1, type: 3}
+  - tileType: Exploded
+    sprite: {fileID: 21300000, guid: dac23f4f1e11b46dabc14a43934e7465, type: 3}
