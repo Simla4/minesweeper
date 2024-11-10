@@ -102,7 +102,6 @@ public class GridManager : MonoBehaviour
                 minePositions.Add(new Vector2Int(xPosition, yPosition));
                 tiles[xPosition, yPosition].SetTileType("Mine", this);
                 i++;
-                Debug.Log("X: " + xPosition + " Y: " + yPosition + " position include mine.");
             }
         }
         
@@ -158,7 +157,6 @@ public class GridManager : MonoBehaviour
                 continue;
             }
         }
-        Debug.Log("mine count: " + mineCount);
         return mineCount;
     }
 
