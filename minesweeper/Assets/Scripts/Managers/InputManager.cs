@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -5,8 +6,11 @@ public class InputManager : MonoBehaviour
     #region Variables
 
     private bool isTouching = false;
+    private bool isFirstTouching = true;
     private float touchStartTime = 0f;
     private float holdThreshold = 0.5f;
+
+    public static Action<TileBase> OnFirstClicked;
 
     #endregion
 
@@ -75,6 +79,12 @@ public class InputManager : MonoBehaviour
             TileBase tile = hit.collider.GetComponent<TileBase>();
             if (tile != null)
             {
+                if (isFirstTouching)
+                {
+                    isFirstTouching = false;
+                    OnFirstClicked?.Invoke(tile);
+                    return;
+                }
                 tile.OnTileClicked(); 
             }
         }
