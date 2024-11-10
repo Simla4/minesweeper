@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class TileBase : MonoBehaviour, IPointerClickHandler
+public class TileBase : MonoBehaviour
 {
     #region Variables
 
@@ -59,10 +59,10 @@ public class TileBase : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        OnTileClicked();
-    }
+    // public void OnPointerClick(PointerEventData eventData)
+    // {
+    //     OnTileClicked();
+    // }
 
     public void SetTileType(String tileType, GridManager caller)
     {
