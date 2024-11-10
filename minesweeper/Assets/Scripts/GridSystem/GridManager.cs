@@ -15,9 +15,9 @@ public class GridManager : MonoBehaviour
     
     public TileBase selectedTile;
     public List<Vector2Int> mineRestrictedTiles;
-    private TileBase[,] tiles;
+    public List<Vector2Int> minePositions;
 
-    private List<Vector2Int> minePositions;
+    private TileBase[,] tiles;
     private List<Vector2Int> directions = new List<Vector2Int>
     {
         new Vector2Int(0, 1),
@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviour
                 tiles[x, y] = newTile;
                 newTile.SetTilePosition(new Vector2Int(x, y), this);
                 newTile.Type = TileBase.TileType.Empty;
-
+                newTile.SetTileType("Empty", this);
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
             }
         }
@@ -99,7 +99,7 @@ public class GridManager : MonoBehaviour
                 !mineRestrictedTiles.Contains(new Vector2Int(xPosition, yPosition)))
             {
                 tiles[xPosition, yPosition].Type = TileBase.TileType.Mine;
-//                minePositions.Add(new Vector2Int(xPosition, yPosition));
+                minePositions.Add(new Vector2Int(xPosition, yPosition));
                 tiles[xPosition, yPosition].SetTileType("Mine", this);
                 i++;
                 Debug.Log("X: " + xPosition + " Y: " + yPosition + " position include mine.");
@@ -111,13 +111,27 @@ public class GridManager : MonoBehaviour
 
     private void GenerateNumbers()
     {
-        for (int x = 0; x < gridWidth; x++)
+        for (int i = 0; i < minePositions.Count; i++)
         {
-            for (int y = 0; y < gridHeight; y++)
+            for (int j = 0; j < directions.Count; j++)
             {
-                CheckAllDirections(new Vector2Int(x, y));
-                tiles[x, y].Type = TileBase.TileType.Number;
-                Debug.Log("X: " + x + " Y: " + y + " position include number.");
+                Vector2Int targetTilePosition = new Vector2Int(minePositions[i].x, minePositions[i].y) + directions[j];
+                try
+                {
+                    if (tiles[targetTilePosition.x, targetTilePosition.y] != null)
+                    {
+                        if (tiles[targetTilePosition.x, targetTilePosition.y].Type != TileBase.TileType.Mine)
+                        {
+                            tiles[targetTilePosition.x, targetTilePosition.y].Type = TileBase.TileType.Number;
+                            var mineCount = CheckAllDirections(targetTilePosition);
+                            tiles[targetTilePosition.x, targetTilePosition.y].SetTileType(mineCount.ToString(), this);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
             }
         }
     }
@@ -129,7 +143,20 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < directions.Count; i++)
         {
             Vector2Int targetTilePosition = position + directions[i];
-            mineCount++;
+            try
+            {
+                if (tiles[targetTilePosition.x, targetTilePosition.y] != null)
+                {
+                    if (tiles[targetTilePosition.x, targetTilePosition.y].Type == TileBase.TileType.Mine)
+                    {
+                        mineCount++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                continue;
+            }
         }
         Debug.Log("mine count: " + mineCount);
         return mineCount;
