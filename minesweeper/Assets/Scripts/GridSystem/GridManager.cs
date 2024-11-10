@@ -34,6 +34,16 @@ public class GridManager : MonoBehaviour
 
     #region Callbacks
 
+    private void OnEnable()
+    {
+        InputManager.OnFirstClicked += SetSelectedTile;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.OnFirstClicked -= SetSelectedTile;
+    }
+
     private void Start()
     {
         CreateGrid();
@@ -43,7 +53,6 @@ public class GridManager : MonoBehaviour
 
 
     #region OtherMethods
-
 
     private void CreateGrid()
     {
@@ -63,8 +72,13 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    private void SetSelectedTile(TileBase tile)
+    {
+        selectedTile = tile;
+        CheckMineRestrictedTiles();   
+    }
     
-    [Button]
     private void CheckMineRestrictedTiles()
     {
         for (int i = 0; i < directions.Count; i++)
@@ -133,6 +147,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+        selectedTile.OnTileClicked();
     }
 
     private int CheckAllDirections(Vector2Int position)
