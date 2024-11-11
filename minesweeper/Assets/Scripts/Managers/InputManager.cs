@@ -85,7 +85,11 @@ public class InputManager : MonoBehaviour
                     OnFirstClicked?.Invoke(tile);
                     return;
                 }
-                tile.OnTileClicked(); 
+
+                if (!tile.Opened)
+                {
+                    tile.OnTileClicked(); 
+                }
             }
         }
     }
@@ -100,7 +104,10 @@ public class InputManager : MonoBehaviour
             TileBase tile = hit.collider.GetComponent<TileBase>();
             if (tile != null)
             {
-                tile.OnTileHeld(); // Basılı tutma işlemi
+                if (!tile.Flagged)
+                {
+                    tile.OnTileHeld();
+                }
             }
         }
     }

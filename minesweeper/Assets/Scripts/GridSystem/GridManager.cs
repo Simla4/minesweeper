@@ -175,5 +175,10 @@ public class GridManager : MonoBehaviour
         return mineCount;
     }
 
+    private void ExplodeTiles()
+    {
+        
+    }
+
     #endregion
 }
