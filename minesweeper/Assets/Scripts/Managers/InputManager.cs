@@ -18,12 +18,6 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            HandleTouch(touch);
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             isTouching = true;
@@ -46,29 +40,6 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    void HandleTouch(Touch touch)
-    {
-        if (touch.phase == TouchPhase.Began)
-        {
-            isTouching = true;
-            touchStartTime = Time.time;
-        }
-
-        if (touch.phase == TouchPhase.Stationary && isTouching)
-        {
-            if (Time.time - touchStartTime >= holdThreshold)
-            {
-                HandleHold(touch.position);
-            }
-        }
-
-        if (touch.phase == TouchPhase.Ended && isTouching)
-        {
-            HandleClick(touch.position);
-            isTouching = false;
-        }
-    }
-
     void HandleClick(Vector3 screenPosition)
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
@@ -86,7 +57,7 @@ public class InputManager : MonoBehaviour
                     return;
                 }
 
-                if (!tile.Opened)
+                if (!tile.Opened && !tile.Flagged)
                 {
                     tile.OnTileClicked(); 
                 }
@@ -104,7 +75,7 @@ public class InputManager : MonoBehaviour
             TileBase tile = hit.collider.GetComponent<TileBase>();
             if (tile != null)
             {
-                if (!tile.Flagged)
+                if (!tile.Opened)
                 {
                     tile.OnTileHeld();
                 }

@@ -15,8 +15,8 @@ public class TileBase : MonoBehaviour
     private Sprite openedSprite;
     private Vector2Int tilePosition;
     private TileType type;
-    private bool flagged = false;
-    private bool opened = false;
+    public bool flagged = false;
+    public bool opened = false;
     
     public bool Opened { get => opened; set => opened = value; }
     public bool Flagged { get => flagged;  set => flagged = value; }
@@ -49,6 +49,25 @@ public class TileBase : MonoBehaviour
     public void OnTileHeld()
     {
         Debug.Log(tilePosition + ". tile holded");
+        
+        var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
+
+        if (!flagged)
+        {
+            if (tileSpriteDictionary.TryGetValue("Flag", out Sprite sprite))
+            {
+                tileImg.sprite = sprite;
+                flagged = true;
+            }
+        }
+        else
+        {
+            if (tileSpriteDictionary.TryGetValue("Unknown", out Sprite sprite))
+            {
+                tileImg.sprite = sprite;
+                flagged = false;
+            }
+        }
     }
 
     private void ExplodeTile()
@@ -56,6 +75,7 @@ public class TileBase : MonoBehaviour
         if (openedSprite != null)
         {
             tileImg.sprite = openedSprite;
+            opened = true;
         }
     }
 
