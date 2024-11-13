@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     private float holdThreshold = 0.5f;
 
     public static Action<TileBase> OnFirstClicked;
+    public static Action<TileBase> OnClickedTile;
 
     #endregion
 
@@ -56,10 +57,11 @@ public class InputManager : MonoBehaviour
                     OnFirstClicked?.Invoke(tile);
                     return;
                 }
-
+                
                 if (!tile.Opened && !tile.Flagged)
                 {
-                    tile.OnTileClicked(); 
+                    OnClickedTile?.Invoke(tile);
+                    //TO DO: patlatılacak obje eklenecek
                 }
             }
         }

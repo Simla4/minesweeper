@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.WSA;
 using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
@@ -14,9 +16,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private TileBase tilePrefab;
     
     public TileBase selectedTile;
-    public List<Vector2Int> mineRestrictedTiles;
-    public List<Vector2Int> minePositions;
-
+    
+    private List<Vector2Int> mineRestrictedTiles = new List<Vector2Int>();
+    private List<Vector2Int> minePositions = new List<Vector2Int>();
+    private List<TileBase> tilesOfExplode = new List<TileBase>();
+    private List<TileBase> tilesOfCheck = new List<TileBase>();
     private TileBase[,] tiles;
     private List<Vector2Int> directions = new List<Vector2Int>
     {
@@ -37,11 +41,13 @@ public class GridManager : MonoBehaviour
     private void OnEnable()
     {
         InputManager.OnFirstClicked += SetSelectedTile;
+        InputManager.OnClickedTile += CheckTile;
     }
 
     private void OnDisable()
     {
-        InputManager.OnFirstClicked -= SetSelectedTile;
+        InputManager.OnFirstClicked -= SetSelectedTile;        
+        InputManager.OnClickedTile -= CheckTile;
     }
 
     private void Start()
@@ -136,7 +142,7 @@ public class GridManager : MonoBehaviour
                         if (tiles[targetTilePosition.x, targetTilePosition.y].Type != TileBase.TileType.Mine)
                         {
                             tiles[targetTilePosition.x, targetTilePosition.y].Type = TileBase.TileType.Number;
-                            var mineCount = CheckAllDirections(targetTilePosition);
+                            var mineCount = CheckAllDirectionsForMines(targetTilePosition);
                             tiles[targetTilePosition.x, targetTilePosition.y].SetTileType(mineCount.ToString(), this);
                         }
                     }
@@ -150,7 +156,7 @@ public class GridManager : MonoBehaviour
         selectedTile.OnTileClicked();
     }
 
-    private int CheckAllDirections(Vector2Int position)
+    private int CheckAllDirectionsForMines(Vector2Int position)
     {
         int mineCount = 0;
         
@@ -175,9 +181,37 @@ public class GridManager : MonoBehaviour
         return mineCount;
     }
 
-    private void ExplodeTiles()
+    private void CheckTile(TileBase tile)
+    {
+        selectedTile = tile;
+        if (selectedTile.Type == TileBase.TileType.Mine)
+        {
+            Debug.Log("Fail");
+            //TO DO: will stop timer
+        }
+        else if (selectedTile.Type == TileBase.TileType.Number)
+        {
+            selectedTile.OnTileClicked();
+        }
+        else if (selectedTile.Type == TileBase.TileType.Empty)
+        {
+            tilesOfExplode.Add(selectedTile);
+            CheckNeighbours();
+        }
+    }
+
+    private void CheckNeighbours()
     {
         
+    }
+
+    private void ExplodeTiles()
+    {
+        for (int i = 0; i < tilesOfExplode.Count; i++)
+        {
+            tilesOfExplode[i].OnTileClicked();
+        }
+        tilesOfExplode.Clear();
     }
 
     #endregion
