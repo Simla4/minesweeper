@@ -19,8 +19,6 @@ public class GridManager : MonoBehaviour
     
     private List<Vector2Int> mineRestrictedTiles = new List<Vector2Int>();
     private List<Vector2Int> minePositions = new List<Vector2Int>();
-    private List<TileBase> tilesOfExplode = new List<TileBase>();
-    private List<TileBase> tilesOfCheck = new List<TileBase>();
     private TileBase[,] tiles;
     private List<Vector2Int> directions = new List<Vector2Int>
     {
@@ -41,13 +39,13 @@ public class GridManager : MonoBehaviour
     private void OnEnable()
     {
         InputManager.OnFirstClicked += SetSelectedTile;
-        InputManager.OnClickedTile += CheckTile;
+        InputManager.OnClickedTile += ExplodeTiles;
     }
 
     private void OnDisable()
     {
         InputManager.OnFirstClicked -= SetSelectedTile;        
-        InputManager.OnClickedTile -= CheckTile;
+        InputManager.OnClickedTile -= ExplodeTiles;
     }
 
     private void Start()
@@ -153,7 +151,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        selectedTile.OnTileClicked();
+        ExplodeTiles(selectedTile);
     }
 
     private int CheckAllDirectionsForMines(Vector2Int position)
@@ -181,37 +179,33 @@ public class GridManager : MonoBehaviour
         return mineCount;
     }
 
-    private void CheckTile(TileBase tile)
+    private void ExplodeTiles(TileBase tile)
     {
-        selectedTile = tile;
-        if (selectedTile.Type == TileBase.TileType.Mine)
-        {
-            Debug.Log("Fail");
-            //TO DO: will stop timer
-        }
-        else if (selectedTile.Type == TileBase.TileType.Number)
-        {
-            selectedTile.OnTileClicked();
-        }
-        else if (selectedTile.Type == TileBase.TileType.Empty)
-        {
-            tilesOfExplode.Add(selectedTile);
-            CheckNeighbours();
-        }
-    }
+        if (tile.Opened || tile.Type == TileBase.TileType.Mine)
+            return;
 
-    private void CheckNeighbours()
-    {
+        tile.OnTileClicked();
+
+        if (tile.Type == TileBase.TileType.Number)
+            return;
+            
         
-    }
-
-    private void ExplodeTiles()
-    {
-        for (int i = 0; i < tilesOfExplode.Count; i++)
+        for (int i = 0; i < directions.Count; i++)
         {
-            tilesOfExplode[i].OnTileClicked();
+            var tilePosition = tile.GetTilePosition();
+            var newTilePosition = tilePosition + directions[i];
+            try
+            {
+                if (tiles[newTilePosition.x, newTilePosition.y] != null)
+                {
+                    ExplodeTiles(tiles[newTilePosition.x, newTilePosition.y]);
+                }
+            }
+            catch (Exception e)
+            {
+                continue;
+            }
         }
-        tilesOfExplode.Clear();
     }
 
     #endregion
