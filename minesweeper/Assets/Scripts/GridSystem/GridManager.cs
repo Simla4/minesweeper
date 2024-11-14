@@ -16,6 +16,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private TileBase tilePrefab;
     
     public TileBase selectedTile;
+    public static Action OnFail;
     
     private List<Vector2Int> mineRestrictedTiles = new List<Vector2Int>();
     private List<Vector2Int> minePositions = new List<Vector2Int>();
@@ -181,7 +182,13 @@ public class GridManager : MonoBehaviour
 
     private void ExplodeTiles(TileBase tile)
     {
-        if (tile.Opened || tile.Type == TileBase.TileType.Mine)
+        if (tile.Type == TileBase.TileType.Mine)
+        {
+            OnFail?.Invoke();
+            return;
+        }
+        
+        if (tile.Opened)
             return;
 
         tile.OnTileClicked();
