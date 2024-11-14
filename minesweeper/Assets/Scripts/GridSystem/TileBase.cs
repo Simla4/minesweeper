@@ -24,6 +24,16 @@ public class TileBase : MonoBehaviour
 
     #endregion
 
+    private void OnEnable()
+    {
+        GridManager.OnFail += OnFail;
+    }
+
+    private void OnDisable()
+    {
+        GridManager.OnFail -= OnFail;
+    }
+
     #region Other Methods
 
     public void SetTilePosition(Vector2Int tilePosition, GridManager caller)
@@ -54,7 +64,9 @@ public class TileBase : MonoBehaviour
 
         if (!flagged)
         {
-            if (tileSpriteDictionary.TryGetValue("Flag", out Sprite sprite))
+            var sprite = GetTileSpriteDictionary("Flag");
+            
+            if (sprite != null)
             {
                 tileImg.sprite = sprite;
                 flagged = true;
@@ -62,7 +74,9 @@ public class TileBase : MonoBehaviour
         }
         else
         {
-            if (tileSpriteDictionary.TryGetValue("Unknown", out Sprite sprite))
+            var sprite = GetTileSpriteDictionary("Unknown");
+
+            if (sprite != null)
             {
                 tileImg.sprite = sprite;
                 flagged = false;
@@ -79,20 +93,42 @@ public class TileBase : MonoBehaviour
         }
     }
 
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     OnTileClicked();
-    // }
+    public void OnFail()
+    {
+        if (type == TileType.Mine)
+        {
+            var newSprite = GetTileSpriteDictionary("Exploded");
+            if (newSprite != null)
+            {
+                tileImg.sprite = newSprite;
+            }
+        }
+        else
+        {
+            tileImg.sprite = openedSprite;
+        }
+    }
+
+    private Sprite GetTileSpriteDictionary(String tileType)
+    {
+        var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
+            
+        if (tileSpriteDictionary.TryGetValue(tileType, out Sprite sprite))
+        {
+            return sprite;
+        }
+
+        return null;
+    }
 
     public void SetTileType(String tileType, GridManager caller)
     {
         if (caller != null)
         {
-            var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
-            
-            if (tileSpriteDictionary.TryGetValue(tileType, out Sprite sprite))
+            var newSprite = GetTileSpriteDictionary(tileType);
+            if (newSprite != null)
             {
-                openedSprite = sprite;
+                openedSprite = newSprite;
             }
         }
     }
