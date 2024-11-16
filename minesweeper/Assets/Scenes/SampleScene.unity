@@ -243,7 +243,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.55, y: 1.64, z: -10}
+  m_LocalPosition: {x: 2, y: 4.7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -334,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 1484522557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.21394427, y: -0.34706524, z: 0.04093455}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -385,9 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e974b347c4d4ca6b779657fcf2d63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 10
-  gridHeight: 14
-  mineCount: 20
+  gridWidth: 11
+  gridHeight: 23
+  mineCount: 40
   tilePrefab: {fileID: 1807755198586340542, guid: 9c93b5aa0e9fe455ab285a2a202887ac, type: 3}
   selectedTile: {fileID: 0}
 --- !u!1 &1752159010
