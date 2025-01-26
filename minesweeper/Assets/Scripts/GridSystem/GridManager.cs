@@ -41,17 +41,14 @@ public class GridManager : MonoBehaviour
     {
         InputManager.OnFirstClicked += SetSelectedTile;
         InputManager.OnClickedTile += ExplodeTiles;
+        CreateNewGameButton.OnCreateNewGameEvent += CreateGrid;
     }
 
     private void OnDisable()
     {
         InputManager.OnFirstClicked -= SetSelectedTile;        
         InputManager.OnClickedTile -= ExplodeTiles;
-    }
-
-    private void Start()
-    {
-        CreateGrid();
+        CreateNewGameButton.OnCreateNewGameEvent -= CreateGrid;
     }
 
     #endregion
