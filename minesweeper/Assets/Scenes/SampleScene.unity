@@ -290,7 +290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb3f40098190c4812ba7a9d0538bc8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 240085475}
 --- !u!1 &332120708
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19434b30922ec4b459c4467cbaf15397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 332120710}
 --- !u!1 &397355458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1168,7 @@ GameObject:
   - component: {fileID: 1984839040}
   - component: {fileID: 1984839039}
   - component: {fileID: 1984839038}
+  - component: {fileID: 1984839042}
   m_Layer: 0
   m_Name: Pre-GameCanvas
   m_TagString: Untagged
@@ -1273,6 +1272,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1984839042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984839036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3378880d381844b7ae10d4a51a922d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

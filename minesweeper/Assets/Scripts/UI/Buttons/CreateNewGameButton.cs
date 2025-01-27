@@ -11,7 +11,6 @@ public class CreateNewGameButton : ButtonBase
     {
         base.OnClickedButton();
         NetworkManager.Singleton.StartServer();
-        Debug.Log("Game started"); 
         OnCreateNewGameEvent?.Invoke();
     }
 }
