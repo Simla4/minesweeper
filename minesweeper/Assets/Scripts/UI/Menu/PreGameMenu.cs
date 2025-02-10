@@ -3,11 +3,11 @@ public class PreGameMenu : Menus
 {
     private void OnEnable()
     {
-        ButtonBase.OnJoinGameEvent += CloseMenu;
+        ButtonBase.OnGameStartEvent += CloseMenu;
     }
 
     private void OnDisable()
     {
-        ButtonBase.OnJoinGameEvent -= CloseMenu;
+        ButtonBase.OnGameStartEvent -= CloseMenu;
     }
 }

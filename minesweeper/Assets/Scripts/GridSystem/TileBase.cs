@@ -1,25 +1,24 @@
-using System;
-using Microsoft.Unity.VisualStudio.Editor;
+using Unity.Netcode; // NGO Kütüphanesini ekleyelim
 using UnityEngine;
-using UnityEngine.EventSystems;
+using System;
 
-
-public class TileBase : MonoBehaviour
+public class TileBase : NetworkBehaviour
 {
     #region Variables
 
     [SerializeField] private SpriteRenderer tileImg;
     [SerializeField] private TileData tileData;
-    
+
     private Sprite defaultSprite;
     private Sprite openedSprite;
     private Vector2Int tilePosition;
-    private TileType type;
-    public bool flagged = false;
-    public bool opened = false;
+    private NetworkVariable<bool> flagged = new NetworkVariable<bool>(false);
+    private NetworkVariable<bool> opened = new NetworkVariable<bool>(false);
     
-    public bool Opened { get => opened; set => opened = value; }
-    public bool Flagged { get => flagged;  set => flagged = value; }
+    public bool Opened { get => opened.Value; set => opened.Value = value; }
+    public bool Flagged { get => flagged.Value; set => flagged.Value = value; }
+
+    private TileType type;
     public TileType Type { get => type; set => type = value; }
 
     #endregion
@@ -43,7 +42,7 @@ public class TileBase : MonoBehaviour
             this.tilePosition = tilePosition;
         }
     }
-    
+
     public Vector2Int GetTilePosition()
     {
         return tilePosition;
@@ -51,25 +50,34 @@ public class TileBase : MonoBehaviour
 
     public void OnTileClicked()
     {
-        Debug.Log(tilePosition + ". tile clicked");
-        ExplodeTile();
+        if (IsServer) // Sadece server'da patlamayı tetikle
+        {
+            Debug.Log(tilePosition + ". tile clicked");
+            ExplodeTileClientRpc();
+        }
     }
-
 
     public void OnTileHeld()
     {
-        Debug.Log(tilePosition + ". tile holded");
-        
-        var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
+        if (IsOwner) // Sadece kendi tıklayan oyuncu flag ekleyebilsin
+        {
+            Debug.Log(tilePosition + ". tile holded");
 
-        if (!flagged)
+            FlagTileServerRpc(); // İstemci isteği server'a gönderir
+        }
+    }
+
+    [ServerRpc]
+    private void FlagTileServerRpc()
+    {
+        if (!flagged.Value)
         {
             var sprite = GetTileSpriteDictionary("Flag");
-            
+
             if (sprite != null)
             {
                 tileImg.sprite = sprite;
-                flagged = true;
+                flagged.Value = true;
             }
         }
         else
@@ -79,17 +87,18 @@ public class TileBase : MonoBehaviour
             if (sprite != null)
             {
                 tileImg.sprite = sprite;
-                flagged = false;
+                flagged.Value = false;
             }
         }
     }
 
-    private void ExplodeTile()
+    [ClientRpc]
+    private void ExplodeTileClientRpc()
     {
         if (openedSprite != null)
         {
             tileImg.sprite = openedSprite;
-            opened = true;
+            opened.Value = true;
         }
     }
 
@@ -109,7 +118,7 @@ public class TileBase : MonoBehaviour
         }
     }
 
-    private Sprite GetTileSpriteDictionary(String tileType)
+    private Sprite GetTileSpriteDictionary(string tileType)
     {
         var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
             
@@ -121,7 +130,7 @@ public class TileBase : MonoBehaviour
         return null;
     }
 
-    public void SetTileType(String tileType, GridManager caller)
+    public void SetTileType(string tileType, GridManager caller)
     {
         if (caller != null)
         {
@@ -135,7 +144,7 @@ public class TileBase : MonoBehaviour
 
     #endregion
 
-    public enum  TileType
+    public enum TileType
     {
         Empty,
         Mine,

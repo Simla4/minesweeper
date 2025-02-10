@@ -211,6 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5230971414108905841}
   - component: {fileID: 1807755198586340542}
+  - component: {fileID: 6640789604799358884}
   - component: {fileID: 7866925183641082113}
   m_Layer: 0
   m_Name: Tile
@@ -249,6 +250,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileImg: {fileID: 7701752075895147680}
   tileData: {fileID: 11400000, guid: bbbb6147b7876493581e90ecfa716a96, type: 2}
+--- !u!114 &6640789604799358884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4606293677116195807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3970003913
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!61 &7866925183641082113
 BoxCollider2D:
   m_ObjectHideFlags: 0

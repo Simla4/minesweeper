@@ -7,7 +7,7 @@ public abstract class ButtonBase : MonoBehaviour
 {
     private Button button;
 
-    public static Action OnJoinGameEvent;
+    public static Action OnGameStartEvent;
     
 
     private void Awake()
@@ -19,6 +19,6 @@ public abstract class ButtonBase : MonoBehaviour
 
     protected virtual void OnClickedButton()
     {
-        OnJoinGameEvent?.Invoke();
+        OnGameStartEvent?.Invoke();
     }
 }
