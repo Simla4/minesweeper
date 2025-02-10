@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.WSA;
 using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
@@ -14,6 +17,7 @@ public class GridManager : MonoBehaviour
     
     public TileBase selectedTile;
     public static Action OnFail;
+    public static Action OnGenerateBoardEvent;
     
     private List<Vector2Int> mineRestrictedTiles = new List<Vector2Int>();
     private List<Vector2Int> minePositions = new List<Vector2Int>();
@@ -48,6 +52,11 @@ public class GridManager : MonoBehaviour
         ButtonBase.OnGameStartEvent -= CreateGrid;
     }
 
+    // private void Start()
+    // {
+    //     CreateGrid();
+    // }
+
     #endregion
 
 
@@ -70,6 +79,8 @@ public class GridManager : MonoBehaviour
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
             }
         }
+        
+        OnGenerateBoardEvent?.Invoke(); 
     }
 
     private void SetSelectedTile(TileBase tile)

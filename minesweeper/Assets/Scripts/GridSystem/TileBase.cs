@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
 public class TileBase : MonoBehaviour
 {
     #region Variables
