@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     private float holdThreshold = 0.5f;
 
     public static Action<TileBase> OnFirstClicked;
+    public static Action StartGame;
     public static Action<TileBase> OnClickedTile;
 
     #endregion
@@ -75,6 +76,7 @@ public class InputManager : MonoBehaviour
                 {
                     isFirstTouching = false;
                     OnFirstClicked?.Invoke(tile);
+                    StartGame?.Invoke();
                     return;
                 }
                 
