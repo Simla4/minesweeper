@@ -12,6 +12,8 @@ public class TileBase : MonoBehaviour
     private Sprite openedSprite;
     private Vector2Int tilePosition;
     private TileType type;
+    
+    public static Action<bool> OnButtonHeld;
     public bool flagged = false;
     public bool opened = false;
     
@@ -79,6 +81,8 @@ public class TileBase : MonoBehaviour
                 flagged = false;
             }
         }
+        
+        OnButtonHeld?.Invoke(flagged);
     }
 
     private void ExplodeTile()

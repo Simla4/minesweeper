@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
     public TileBase selectedTile;
     public static Action OnFail;
     public static Action OnGenerateBoardEvent;
+    public int MineCount => mineCount;
     
     private List<Vector2Int> mineRestrictedTiles = new List<Vector2Int>();
     private List<Vector2Int> minePositions = new List<Vector2Int>();

@@ -12,8 +12,8 @@ public class InputManager : MonoBehaviour
     private float holdThreshold = 0.5f;
 
     public static Action<TileBase> OnFirstClicked;
-    public static Action StartGame;
     public static Action<TileBase> OnClickedTile;
+    public static Action StartGame;
 
     #endregion
 
