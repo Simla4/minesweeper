@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class GridManager : NetworkBehaviour
+public class GridManager : MonoBehaviour
 {
     #region Variables
 
@@ -48,14 +47,6 @@ public class GridManager : NetworkBehaviour
         InputManager.OnClickedTile -= ExplodeTiles;
         ButtonBase.OnGameStartEvent -= CreateGrid;
     }
-    
-    // public override void OnNetworkSpawn()
-    // {
-    //     if (!IsServer) return; // Sadece sunucu tile oluşturabilir
-    //
-    //     Debug.Log("Sunucu başlatıldı, grid oluşturuluyor...");
-    //     CreateGrid();
-    // }
 
     #endregion
 
@@ -66,22 +57,20 @@ public class GridManager : NetworkBehaviour
     {
         tiles = new TileBase[gridWidth, gridHeight];
 
-        for (int x = 0; x < gridWidth; x++)
+        for(int x = 0; x < gridWidth; x++)
         {
-            for (int y = 0; y < gridHeight; y++)
+            for(int y = 0; y < gridHeight; y ++)
             {
                 TileBase newTile = Instantiate(tilePrefab);
+
                 tiles[x, y] = newTile;
                 newTile.SetTilePosition(new Vector2Int(x, y), this);
                 newTile.Type = TileBase.TileType.Empty;
                 newTile.SetTileType("Empty", this);
                 newTile.transform.position = new Vector3(x * 0.4f, y * 0.4f, 0);
-
-                //newTile.GetComponent<NetworkObject>().Spawn();
             }
         }
     }
-
 
     private void SetSelectedTile(TileBase tile)
     {

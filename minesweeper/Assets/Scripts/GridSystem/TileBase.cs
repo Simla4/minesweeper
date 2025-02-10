@@ -1,24 +1,23 @@
-using Unity.Netcode; // NGO Kütüphanesini ekleyelim
-using UnityEngine;
 using System;
+using UnityEngine;
 
-public class TileBase : NetworkBehaviour
+
+public class TileBase : MonoBehaviour
 {
     #region Variables
 
     [SerializeField] private SpriteRenderer tileImg;
     [SerializeField] private TileData tileData;
-
+    
     private Sprite defaultSprite;
     private Sprite openedSprite;
     private Vector2Int tilePosition;
-    private NetworkVariable<bool> flagged = new NetworkVariable<bool>(false);
-    private NetworkVariable<bool> opened = new NetworkVariable<bool>(false);
-    
-    public bool Opened { get => opened.Value; set => opened.Value = value; }
-    public bool Flagged { get => flagged.Value; set => flagged.Value = value; }
-
     private TileType type;
+    public bool flagged = false;
+    public bool opened = false;
+    
+    public bool Opened { get => opened; set => opened = value; }
+    public bool Flagged { get => flagged;  set => flagged = value; }
     public TileType Type { get => type; set => type = value; }
 
     #endregion
@@ -42,7 +41,7 @@ public class TileBase : NetworkBehaviour
             this.tilePosition = tilePosition;
         }
     }
-
+    
     public Vector2Int GetTilePosition()
     {
         return tilePosition;
@@ -50,34 +49,25 @@ public class TileBase : NetworkBehaviour
 
     public void OnTileClicked()
     {
-        if (IsServer) // Sadece server'da patlamayı tetikle
-        {
-            Debug.Log(tilePosition + ". tile clicked");
-            ExplodeTileClientRpc();
-        }
+        Debug.Log(tilePosition + ". tile clicked");
+        ExplodeTile();
     }
+
 
     public void OnTileHeld()
     {
-        if (IsOwner) // Sadece kendi tıklayan oyuncu flag ekleyebilsin
-        {
-            Debug.Log(tilePosition + ". tile holded");
+        Debug.Log(tilePosition + ". tile holded");
+        
+        var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
 
-            FlagTileServerRpc(); // İstemci isteği server'a gönderir
-        }
-    }
-
-    [ServerRpc]
-    private void FlagTileServerRpc()
-    {
-        if (!flagged.Value)
+        if (!flagged)
         {
             var sprite = GetTileSpriteDictionary("Flag");
-
+            
             if (sprite != null)
             {
                 tileImg.sprite = sprite;
-                flagged.Value = true;
+                flagged = true;
             }
         }
         else
@@ -87,18 +77,17 @@ public class TileBase : NetworkBehaviour
             if (sprite != null)
             {
                 tileImg.sprite = sprite;
-                flagged.Value = false;
+                flagged = false;
             }
         }
     }
 
-    [ClientRpc]
-    private void ExplodeTileClientRpc()
+    private void ExplodeTile()
     {
         if (openedSprite != null)
         {
             tileImg.sprite = openedSprite;
-            opened.Value = true;
+            opened = true;
         }
     }
 
@@ -118,7 +107,7 @@ public class TileBase : NetworkBehaviour
         }
     }
 
-    private Sprite GetTileSpriteDictionary(string tileType)
+    private Sprite GetTileSpriteDictionary(String tileType)
     {
         var tileSpriteDictionary = tileData.GetTileSpriteDictionary();
             
@@ -130,7 +119,7 @@ public class TileBase : NetworkBehaviour
         return null;
     }
 
-    public void SetTileType(string tileType, GridManager caller)
+    public void SetTileType(String tileType, GridManager caller)
     {
         if (caller != null)
         {
@@ -144,7 +133,7 @@ public class TileBase : NetworkBehaviour
 
     #endregion
 
-    public enum TileType
+    public enum  TileType
     {
         Empty,
         Mine,
